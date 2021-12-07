@@ -75,24 +75,31 @@ class Solver
   end
 
   def execute
-    index = 4 # You cannot win before 5 numbers have been called, so lets skip checking
+    index = 3 # You cannot win before 5 numbers have been called, so lets skip checking
+    loosing_board = nil
 
-    while boards.length != 1
+    while !loosing_board # && index < 110
+      index += 1
       winning_board_indexes = get_winning_board_indexes_up_to(index)
-
-      if winning_board_indexes.length > 0 && boards.length > 1
-        winning_board_indexes.reverse.each do | board_index |
-          boards.delete_at(board_index)
+      puts "Winning board indexes: #{winning_board_indexes}"
+      puts "index: #{index}"
+      if winning_board_indexes.length > 0
+        index_modifier = 0
+        winning_board_indexes.each do | board_index |
+          if boards.length == 1
+            loosing_board = boards.first
+          else
+            boards.delete_at(board_index + index_modifier)
+            index_modifier -= 1
+          end
         end
       end
 
-      unless winning_board_indexes.length > 0 && boards.length == 1
-        index += 1
-      end
+      # break if index > 20
     end
-    index += 1
-
-    score = score_winning_board(boards[0], index)
+    # index += 1
+    # binding.pry
+    score = score_winning_board(loosing_board, index)
     puts score
     score
   end
