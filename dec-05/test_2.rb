@@ -1,10 +1,11 @@
 require 'rspec'
+require 'pry'
 require_relative './code_2.rb'
 
 describe 'Solver' do
   it 'returns the correct number of overlaps' do
     solver = Solver.new('./input_test.txt')
-    expect(solver.execute).to eq(11)
+    expect(solver.execute).to eq(12)
   end
 end
 
@@ -26,7 +27,6 @@ describe 'Line' do
     it 'returns all points on a horizontal line' do
       data = '0,0 -> 2,0'
       line = Line.create_from_data(data)
-
       expect(line.points.count).to eq(3)
     end
   end

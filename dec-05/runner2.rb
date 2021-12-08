@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative './code_1'
+require_relative './code_2'
 
 Solver.new.execute

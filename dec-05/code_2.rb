@@ -22,15 +22,38 @@ class Line
     Point.new(point_data_array[0].to_i, point_data_array[1].to_i)
   end
 
+  def x_dir #MULTIPLYER!
+    if starting_point.x > ending_point.x
+      -1
+    elsif starting_point.x < ending_point.x
+      1
+    else
+      0
+    end
+  end
+
+  def y_dir
+    if starting_point.y > ending_point.y
+      -1
+    elsif starting_point.y < ending_point.y
+      1
+    else
+      0
+    end
+  end
+
   def points
     # FILL THIS IN
     # then use this function to map onto the board
-    if horizontal?
+    x_diff = starting_point.x - ending_point.x
+    y_diff = starting_point.y - ending_point.y
 
-    elsif vertical?
+    tracker = x_diff.abs > y_diff.abs ? x_diff : y_diff
 
-    else
-
+    (0..(tracker.abs)).map do | track |
+      x_loc = starting_point.x + track * x_dir
+      y_loc = starting_point.y + track * y_dir
+      Point.new(x_loc, y_loc)
     end
   end
 
@@ -117,27 +140,14 @@ class Solver
 
   def process_lines
     lines.each do | line |
-      if line.horizontal?
-        process_horizontal_line(line)
-      else
-        process_vertical_line(line)
+      line.points.each do |point|
+        mark_point_on_board(point)
       end
     end
   end
 
-  def process_horizontal_line(line)
-    y_location = line.starting_point.y
-    (line.smaller_x_point..line.larger_x_point).to_a.each do |x_location|
-      board[y_location][x_location] += 1
-    end
-  end
-
-  def process_vertical_line(line)
-    x_location = line.starting_point.x
-
-    (line.smaller_y_point..line.larger_y_point).to_a.each do |y_location|
-      board[y_location][x_location] += 1
-    end
+  def mark_point_on_board(point)
+    board[point.y][point.x] += 1
   end
 
   def generate_board
